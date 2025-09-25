@@ -449,28 +449,12 @@
             font-weight: 500;
             font-size: 0.9rem;
             letter-spacing: 0.05em;
-            position: relative;
             transition: all 0.3s ease;
         }
         
         .nav-link:hover {
             color: #ff00cc;
             text-shadow: 0 0 10px #ff00cc;
-        }
-        
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #ff00cc, #3333ff);
-            transition: width 0.3s ease;
-        }
-        
-        .nav-link:hover::after {
-            width: 100%;
         }
         
         /* Mobile Menu Animation */
@@ -880,11 +864,11 @@
     </div>
 
     <!-- Guarantee Section -->
-    <section class="py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-8 max-w-6xl mx-auto">
-        <div class="bg-gradient-to-r from-purple-900 to-pink-700 rounded-xl p-6 sm:p-8 md:p-10 lg:p-12 xl:p-16 text-center shadow-2xl">
-            <i data-feather="award" class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 mx-auto text-yellow-300 mb-4 sm:mb-6 md:mb-8"></i>
-            <h3 class="title-font text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl mb-4 sm:mb-6 md:mb-8 neon-text">RESULTS GUARANTEED</h3>
-            <p class="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl max-w-4xl mx-auto leading-relaxed px-2 sm:px-4">We stand behind our program 100%. Follow the system as designed and you <span class="font-bold text-yellow-300">WILL</span> see dramatic improvements in your strength, endurance, and physique within 30 days - or your money back.</p>
+    <section class="py-8 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 md:px-8 max-w-6xl mx-auto">
+        <div class="bg-gradient-to-r from-purple-900 to-pink-700 rounded-xl p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 text-center shadow-2xl">
+            <i data-feather="award" class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-16 lg:h-16 xl:w-20 xl:h-20 mx-auto text-yellow-300 mb-3 sm:mb-4 md:mb-6 lg:mb-8"></i>
+            <h3 class="title-font text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl mb-3 sm:mb-4 md:mb-6 lg:mb-8 neon-text leading-tight">RESULTS GUARANTEED</h3>
+            <p class="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl max-w-4xl mx-auto leading-relaxed px-1 sm:px-2 md:px-4 break-words">We stand behind our program 100%. Follow the system as designed and you <span class="font-bold text-yellow-300">WILL</span> see dramatic improvements in your strength, endurance, and physique within 30 days - or your money back.</p>
         </div>
     </section>
 
@@ -942,6 +926,28 @@
 
     <script>
         feather.replace();
+        
+        // Mobile Menu Toggle Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                    mobileMenu.classList.toggle('show');
+                });
+                
+                // Close mobile menu when clicking on a link
+                const mobileLinks = mobileMenu.querySelectorAll('a');
+                mobileLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        mobileMenu.classList.add('hidden');
+                        mobileMenu.classList.remove('show');
+                    });
+                });
+            }
+        });
         
         // PayPal Integration and Email Automation
         document.addEventListener('DOMContentLoaded', function() {
