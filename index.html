@@ -7,6 +7,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/feather-icons"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <!-- PayPal SDK - Replace YOUR_PAYPAL_CLIENT_ID with your actual PayPal client ID -->
+    <!-- For testing, you can use PayPal's sandbox client ID -->
+    <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Audiowide&family=Bungee&family=Monoton&family=Press+Start+2P&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -710,9 +713,38 @@
                                 <span>DO IT Without Jimmy</span>
                             </li>
                         </ul>
-                        <button onclick="redirectToPayPal(149)" class="block w-full bg-gradient-to-r from-purple-600 to-blue-500 text-white font-bold py-3 px-6 rounded text-center hover:opacity-90 transition duration-300">
-                            Pay $149
-                        </button>
+                        <div id="paypal-button-container-149" class="w-full"></div>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                paypal.Buttons({
+                                    createOrder: function(data, actions) {
+                                        localStorage.setItem('selectedOption', 'Option 1 - $149');
+                                        return actions.order.create({
+                                            purchase_units: [{
+                                                amount: {
+                                                    value: '149.00'
+                                                },
+                                                description: 'Super Human 30 Program - Option 1'
+                                            }]
+                                        });
+                                    },
+                                    onApprove: function(data, actions) {
+                                        return actions.order.capture().then(function(details) {
+                                            console.log('Payment completed by ' + details.payer.name.given_name);
+                                            showConfirmationModal();
+                                        });
+                                    },
+                                    onError: function(err) {
+                                        console.error('PayPal payment error:', err);
+                                        alert('Payment failed. Please try again.');
+                                    },
+                                    onCancel: function(data) {
+                                        console.log('Payment cancelled by user');
+                                        alert('Payment was cancelled.');
+                                    }
+                                }).render('#paypal-button-container-149');
+                            });
+                        </script>
                     </div>
                 </div>
 
@@ -772,9 +804,38 @@
                                 <span><strong>You WILL achieve your goals — guaranteed!</strong></span>
                             </li>
                         </ul>
-                        <button onclick="redirectToPayPal(299)" class="block w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold py-3 px-6 rounded text-center hover:opacity-90 transition duration-300">
-                            Pay $299
-                        </button>
+                        <div id="paypal-button-container-299" class="w-full"></div>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                paypal.Buttons({
+                                    createOrder: function(data, actions) {
+                                        localStorage.setItem('selectedOption', 'Option 2 - $299');
+                                        return actions.order.create({
+                                            purchase_units: [{
+                                                amount: {
+                                                    value: '299.00'
+                                                },
+                                                description: 'Super Human 30 Program - Option 2 (Most Popular)'
+                                            }]
+                                        });
+                                    },
+                                    onApprove: function(data, actions) {
+                                        return actions.order.capture().then(function(details) {
+                                            console.log('Payment completed by ' + details.payer.name.given_name);
+                                            showConfirmationModal();
+                                        });
+                                    },
+                                    onError: function(err) {
+                                        console.error('PayPal payment error:', err);
+                                        alert('Payment failed. Please try again.');
+                                    },
+                                    onCancel: function(data) {
+                                        console.log('Payment cancelled by user');
+                                        alert('Payment was cancelled.');
+                                    }
+                                }).render('#paypal-button-container-299');
+                            });
+                        </script>
                     </div>
                 </div>
             </div>
@@ -1014,20 +1075,7 @@
             }
         });
 
-        // Function to redirect to PayPal with correct amount
-        function redirectToPayPal(amount) {
-            // Store the selected option for later use
-            localStorage.setItem('selectedOption', amount === 149 ? 'Option 1 - $149' : 'Option 2 - $299');
-            
-            // Redirect to PayPal with the correct amount
-            const paypalUrl = `https://www.paypal.me/jimmywatson1456/${amount}`;
-            window.open(paypalUrl, '_blank');
-            
-            // Show confirmation modal after a short delay (simulating payment completion)
-            setTimeout(() => {
-                showConfirmationModal();
-            }, 3000);
-        }
+        // PayPal integration is now handled directly in the button containers above
 
         // Function to show confirmation modal
         function showConfirmationModal() {
