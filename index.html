@@ -2,14 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=5.0">
+    <meta name="format-detection" content="telephone=no">
     <title>SUPER HUMAN 30 DAY PROGRAM</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-pink': '#ff0080',
+                        'hot-purple': '#8a2be2',
+                        'electric-blue': '#00ffff',
+                        'neon-green': '#39ff14',
+                        'neon-orange': '#ff6600',
+                        'synthwave-purple': '#2d1b69',
+                        'synthwave-pink': '#ff006e',
+                        'synthwave-orange': '#ff8500',
+                        'synthwave-yellow': '#ffbe0b',
+                        'synthwave-cyan': '#8ecae6'
+                    }
+                }
+            }
+        }
+    </script>
     <script src="https://unpkg.com/feather-icons"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-    <!-- PayPal SDK - Replace YOUR_PAYPAL_CLIENT_ID with your actual PayPal client ID -->
-    <!-- For testing, you can use PayPal's sandbox client ID -->
-    <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
+
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Audiowide&family=Bungee&family=Monoton&family=Press+Start+2P&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -585,6 +604,54 @@
                 max-height: 95vh;
             }
         }
+
+        /* Mobile-specific optimizations */
+        @media (max-width: 768px) {
+            /* Improve touch targets for mobile */
+            button {
+                min-height: 48px;
+                touch-action: manipulation;
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            /* Ensure buttons are easily tappable */
+            .buy-now-button {
+                padding: 16px 24px !important;
+                font-size: 18px !important;
+                min-height: 56px !important;
+            }
+            
+            /* Prevent zoom on input focus */
+            input, textarea, select {
+                font-size: 16px !important;
+            }
+        }
+
+        /* Enhanced button styling */
+        .buy-now-button {
+            background: linear-gradient(135deg, var(--neon-pink) 0%, var(--hot-purple) 100%) !important;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .buy-now-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--hot-purple) 0%, var(--neon-pink) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .buy-now-button:hover::before {
+            opacity: 1;
+        }
     </style>
 </head>
 <body class="min-h-screen">
@@ -593,7 +660,6 @@
         <div class="container mx-auto px-4 py-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-2">
-                    <div class="w-8 h-8 bg-gradient-to-r from-neon-pink to-hot-purple rounded-full"></div>
                     <span class="synthwave-title text-xl font-bold neon-text">SUPER HUMAN 30</span>
                 </div>
                 
@@ -713,38 +779,10 @@
                                 <span>DO IT Without Jimmy</span>
                             </li>
                         </ul>
-                        <div id="paypal-button-container-149" class="w-full"></div>
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function() {
-                                paypal.Buttons({
-                                    createOrder: function(data, actions) {
-                                        localStorage.setItem('selectedOption', 'Option 1 - $149');
-                                        return actions.order.create({
-                                            purchase_units: [{
-                                                amount: {
-                                                    value: '149.00'
-                                                },
-                                                description: 'Super Human 30 Program - Option 1'
-                                            }]
-                                        });
-                                    },
-                                    onApprove: function(data, actions) {
-                                        return actions.order.capture().then(function(details) {
-                                            console.log('Payment completed by ' + details.payer.name.given_name);
-                                            showConfirmationModal();
-                                        });
-                                    },
-                                    onError: function(err) {
-                                        console.error('PayPal payment error:', err);
-                                        alert('Payment failed. Please try again.');
-                                    },
-                                    onCancel: function(data) {
-                                        console.log('Payment cancelled by user');
-                                        alert('Payment was cancelled.');
-                                    }
-                                }).render('#paypal-button-container-149');
-                            });
-                        </script>
+                        <button onclick="buyNow(149)" class="buy-now-button w-full bg-gradient-to-r from-neon-pink to-hot-purple text-white font-bold py-4 px-8 rounded-lg hover:from-hot-purple hover:to-neon-pink transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-neon-pink/50">
+                            <i data-feather="credit-card" class="inline-block mr-2"></i>
+                            Buy Now - $149
+                        </button>
                     </div>
                 </div>
 
@@ -804,38 +842,10 @@
                                 <span><strong>You WILL achieve your goals — guaranteed!</strong></span>
                             </li>
                         </ul>
-                        <div id="paypal-button-container-299" class="w-full"></div>
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function() {
-                                paypal.Buttons({
-                                    createOrder: function(data, actions) {
-                                        localStorage.setItem('selectedOption', 'Option 2 - $299');
-                                        return actions.order.create({
-                                            purchase_units: [{
-                                                amount: {
-                                                    value: '299.00'
-                                                },
-                                                description: 'Super Human 30 Program - Option 2 (Most Popular)'
-                                            }]
-                                        });
-                                    },
-                                    onApprove: function(data, actions) {
-                                        return actions.order.capture().then(function(details) {
-                                            console.log('Payment completed by ' + details.payer.name.given_name);
-                                            showConfirmationModal();
-                                        });
-                                    },
-                                    onError: function(err) {
-                                        console.error('PayPal payment error:', err);
-                                        alert('Payment failed. Please try again.');
-                                    },
-                                    onCancel: function(data) {
-                                        console.log('Payment cancelled by user');
-                                        alert('Payment was cancelled.');
-                                    }
-                                }).render('#paypal-button-container-299');
-                            });
-                        </script>
+                        <button onclick="buyNow(299)" class="buy-now-button w-full bg-gradient-to-r from-neon-pink to-hot-purple text-white font-bold py-4 px-8 rounded-lg hover:from-hot-purple hover:to-neon-pink transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-neon-pink/50">
+                            <i data-feather="credit-card" class="inline-block mr-2"></i>
+                            Buy Now - $299
+                        </button>
                     </div>
                 </div>
             </div>
@@ -867,8 +877,8 @@
                     <div class="w-20 h-20 bg-gradient-to-br from-cyan-400 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-2xl border-2 border-white/30">
                         <i data-feather="check" class="w-10 h-10 text-white"></i>
                     </div>
-                    <h2 class="text-3xl font-bold text-white mb-2 text-shadow-lg" style="text-shadow: 0 0 20px rgba(255,20,147,0.8);">ORDER CONFIRMED!</h2>
-                    <p class="text-cyan-100 text-lg font-medium" style="text-shadow: 0 0 10px rgba(0,255,255,0.5);">Your transformation journey begins now</p>
+                    <h2 class="text-3xl font-bold text-white mb-2 text-shadow-lg" style="text-shadow: 0 0 20px rgba(255,20,147,0.8);">Thanks for your order!</h2>
+                    <p class="text-cyan-100 text-lg font-medium" style="text-shadow: 0 0 10px rgba(0,255,255,0.5);">Your program is on the way.</p>
                 </div>
             </div>
             
@@ -1064,18 +1074,45 @@
                     });
                 });
             }
+            
+
         });
         
         // PayPal Integration and Email Automation
         document.addEventListener('DOMContentLoaded', function() {
-            // Check if returning from PayPal payment
+            // Check if returning from PayPal payment via URL parameter only
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('payment') === 'success') {
                 showConfirmationModal();
+                // Clean up URL after showing confirmation
+                setTimeout(() => {
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }, 2000);
             }
         });
 
-        // PayPal integration is now handled directly in the button containers above
+        // PayPal.me integration
+        function buyNow(amount) {
+            // Store the selected option for confirmation
+            const option = amount === 149 ? 'Option 1 - $149' : 'Option 2 - $299';
+            localStorage.setItem('selectedOption', option);
+            
+            // Detect if user is on mobile device
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            // Create PayPal.me URL with the specified amount
+            const paypalUrl = `https://www.paypal.me/jimmywatson1456/${amount}`;
+            
+            if (isMobile) {
+                // On mobile, redirect to PayPal
+                window.location.href = paypalUrl;
+            } else {
+                // On desktop, open in new tab
+                window.open(paypalUrl, '_blank');
+            }
+        }
+
+
 
         // Function to show confirmation modal
         function showConfirmationModal() {
