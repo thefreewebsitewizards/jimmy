@@ -1253,39 +1253,19 @@
             }).render('#mobile-paypal-container');
         }
         
-        // Fallback PayPal payment method (enhanced PayPal.me)
+        // Fallback PayPal payment method (PayPal only)
         function fallbackPayPalPayment(amount) {
-            // Create PayPal.me URL with the specified amount
+            // Create PayPal.me URL with the specified amount (PayPal only)
             const paypalUrl = `https://www.paypal.me/jimmywatson1456/${amount}`;
             
             // Detect if user is on mobile device
             const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             
             if (isMobile) {
-                // Enhanced mobile experience with multiple fallbacks
-                
-                // Try PayPal app deep link first
-                const paypalAppUrl = `paypal://pay/?recipient=jimmywatson1456&amount=${amount}&currency=USD`;
-                
-                // Try to open PayPal app
-                window.location.href = paypalAppUrl;
-                
-                // Fallback to web URL after delay
-                setTimeout(() => {
-                    // Check if we're still on the same page (app didn't open)
-                    if (window.location.href.includes('jimmy')) {
-                        window.location.href = paypalUrl;
-                    }
-                }, 1500);
-                
-                // Final fallback - open in new tab
-                setTimeout(() => {
-                    if (window.location.href.includes('jimmy')) {
-                        window.open(paypalUrl, '_blank');
-                    }
-                }, 3000);
+                // Mobile: Direct to PayPal.me (no card options)
+                window.location.href = paypalUrl;
             } else {
-                // Desktop - open in new tab
+                // Desktop: Open PayPal.me in new tab
                 window.open(paypalUrl, '_blank');
             }
         }
