@@ -6,7 +6,6 @@
     <meta name="format-detection" content="telephone=no">
     <title>SUPER HUMAN 30 DAY PROGRAM</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD&intent=capture"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -653,32 +652,6 @@
         .buy-now-button:hover::before {
             opacity: 1;
         }
-        
-        /* PayPal mobile overlay styles */
-        #paypal-overlay {
-            animation: fadeIn 0.3s ease-in-out;
-        }
-        
-        #mobile-paypal-container {
-            animation: slideUp 0.3s ease-out;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        @keyframes slideUp {
-            from { transform: translate(-50%, -40%); opacity: 0; }
-            to { transform: translate(-50%, -50%); opacity: 1; }
-        }
-        
-        @media (max-width: 480px) {
-            #mobile-paypal-container {
-                max-width: 300px;
-                padding: 15px;
-            }
-        }
     </style>
 </head>
 <body class="min-h-screen">
@@ -1118,7 +1091,7 @@
             }
         });
 
-        // Enhanced PayPal integration with mobile optimization
+        // PayPal.me integration
         function buyNow(amount) {
             // Store the selected option for confirmation
             const option = amount === 149 ? 'Option 1 - $149' : 'Option 2 - $299';
@@ -1127,169 +1100,14 @@
             // Detect if user is on mobile device
             const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             
-            // Try to use PayPal smart buttons first for seamless experience
-            if (isMobile && typeof paypal !== 'undefined') {
-                createMobilePayPalButton(amount);
-            } else {
-                // Fallback to PayPal.me URL method
-                fallbackPayPalPayment(amount);
-            }
-        }
-        
-        // Create mobile-optimized PayPal smart button
-        function createMobilePayPalButton(amount) {
-            // Create overlay for PayPal button
-            const overlay = document.createElement('div');
-            overlay.id = 'paypal-overlay';
-            overlay.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.8);
-                z-index: 9999;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                backdrop-filter: blur(5px);
-            `;
-            
-            // Create container for PayPal button
-            const container = document.createElement('div');
-            container.id = 'mobile-paypal-container';
-            container.style.cssText = `
-                background: white;
-                padding: 20px;
-                border-radius: 15px;
-                max-width: 350px;
-                width: 90%;
-                position: relative;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            `;
-            
-            // Add close button
-            const closeBtn = document.createElement('button');
-            closeBtn.innerHTML = '×';
-            closeBtn.style.cssText = `
-                position: absolute;
-                top: 10px;
-                right: 10px;
-                background: #ff4444;
-                color: white;
-                border: none;
-                border-radius: 50%;
-                width: 30px;
-                height: 30px;
-                font-size: 20px;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            `;
-            closeBtn.onclick = function() {
-                document.body.removeChild(overlay);
-                fallbackPayPalPayment(amount);
-            };
-            
-            // Add title
-            const title = document.createElement('h3');
-            title.textContent = `Pay $${amount} with PayPal`;
-            title.style.cssText = `
-                color: #333;
-                text-align: center;
-                margin-bottom: 15px;
-                font-size: 18px;
-                font-weight: bold;
-            `;
-            
-            container.appendChild(closeBtn);
-            container.appendChild(title);
-            overlay.appendChild(container);
-            document.body.appendChild(overlay);
-            
-            // Render PayPal button (PayPal only, no debit/credit cards)
-                paypal.Buttons({
-                    style: {
-                        shape: 'rect',
-                        color: 'gold',
-                        layout: 'vertical',
-                        label: 'paypal',
-                        tagline: false,
-                        height: 50
-                    },
-                    // Disable funding options to show only PayPal
-                    fundingSource: paypal.FUNDING.PAYPAL,
-                    // Disable card payments
-                    disableFunding: 'card,credit,venmo,applepay,googlepay,sepa,bancontact,eps,giropay,ideal,mybank,p24,sofort',
-                    createOrder: function(data, actions) {
-                        return actions.order.create({
-                            purchase_units: [{
-                                amount: {
-                                    value: amount.toString(),
-                                    currency_code: 'USD'
-                                },
-                                payee: {
-                                    email_address: 'jimmywatsonpodcast@gmail.com'
-                                },
-                                description: amount === 149 ? 'Super Human 30 - Option 1' : 'Super Human 30 - Option 2 (VIP)'
-                            }]
-                        });
-                    },
-                    onApprove: function(data, actions) {
-                        return actions.order.capture().then(function(details) {
-                            // Remove overlay
-                            document.body.removeChild(overlay);
-                            // Show confirmation modal
-                            showConfirmationModal();
-                            // Update URL
-                            window.history.replaceState({}, document.title, window.location.pathname + '?payment=success');
-                        });
-                    },
-                    onError: function(err) {
-                        console.error('PayPal error:', err);
-                        document.body.removeChild(overlay);
-                        fallbackPayPalPayment(amount);
-                    },
-                    onCancel: function() {
-                        document.body.removeChild(overlay);
-                    }
-                }).render('#mobile-paypal-container');
-        }
-        
-        // Fallback PayPal payment method (enhanced PayPal.me)
-        function fallbackPayPalPayment(amount) {
             // Create PayPal.me URL with the specified amount
             const paypalUrl = `https://www.paypal.me/jimmywatson1456/${amount}`;
             
-            // Detect if user is on mobile device
-            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            
             if (isMobile) {
-                // Enhanced mobile experience with multiple fallbacks
-                
-                // Try PayPal app deep link first
-                const paypalAppUrl = `paypal://pay/?recipient=jimmywatson1456&amount=${amount}&currency=USD`;
-                
-                // Try to open PayPal app
-                window.location.href = paypalAppUrl;
-                
-                // Fallback to web URL after delay
-                setTimeout(() => {
-                    // Check if we're still on the same page (app didn't open)
-                    if (window.location.href.includes('jimmy')) {
-                        window.location.href = paypalUrl;
-                    }
-                }, 1500);
-                
-                // Final fallback - open in new tab
-                setTimeout(() => {
-                    if (window.location.href.includes('jimmy')) {
-                        window.open(paypalUrl, '_blank');
-                    }
-                }, 3000);
+                // On mobile, redirect to PayPal
+                window.location.href = paypalUrl;
             } else {
-                // Desktop - open in new tab
+                // On desktop, open in new tab
                 window.open(paypalUrl, '_blank');
             }
         }
